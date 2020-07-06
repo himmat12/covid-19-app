@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # covid_app
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter, view our
 [online documentation](https://flutter.dev/docs), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# covid-19-app
+>>>>>>> 68a723f9822c64a3a2fec001b9d475fe32eaf1db
