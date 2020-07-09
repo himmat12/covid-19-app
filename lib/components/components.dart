@@ -12,4 +12,4 @@ export 'package:shimmer/shimmer.dart';
 export '../pages/home_page.dart';
 
 // modals
-export '../model/world_summary.dart';
+export '../model/world_status.dart';

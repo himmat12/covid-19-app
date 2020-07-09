@@ -6,8 +6,11 @@ class ProgressBar extends StatefulWidget {
   double width;
   double height;
 
-  ProgressBar(
-      {@required this.width, @required this.height, @required this.percentage});
+  ProgressBar({
+    @required this.width,
+    @required this.height,
+    @required this.percentage,
+  });
   @override
   _ProgressBarState createState() => _ProgressBarState();
 }
@@ -37,7 +40,7 @@ class _ProgressBarState extends State<ProgressBar> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(0),
-        color: Colors.black26,
+        color: Colors.black12,
       ),
       height: widget.height,
       width: widget.width,
@@ -45,19 +48,19 @@ class _ProgressBarState extends State<ProgressBar> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(0),
-          color: Theme.of(context).primaryColor,
+          color: Theme.of(context).primaryColorDark,
         ),
         height: widget.height,
         alignment: Alignment.centerRight,
         width: getProgress(),
-        child: Text(
-          getProgressPrecent().toInt().toString() + "%",
-          style: TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.w300,
-            fontSize: 8,
-          ),
-        ),
+        // child: Text(
+        //   getProgressPrecent().toInt().toString() + "%",
+        //   style: TextStyle(
+        //     color: Colors.white,
+        //     fontWeight: FontWeight.w300,
+        //     fontSize: 8,
+        //   ),
+        // ),
       ),
     );
   }
