@@ -40,6 +40,15 @@ class _CountryWiseInfectionSummaryState
       child: Scaffold(
         appBar: AppBar(
           title: Text("data by country"),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(
+                FontAwesomeIcons.search,
+                size: 18,
+              ),
+            )
+          ],
         ),
         body: isloading == true
             ? Column(

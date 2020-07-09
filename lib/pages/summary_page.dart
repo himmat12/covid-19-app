@@ -318,7 +318,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
           // country wise data navigator
           Card(
-            elevation: 0,
+            elevation: 0.3,
             child: ListTile(
               onTap: () {
                 Navigator.push(
@@ -343,7 +343,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
           // world covid cases status bar
           Card(
-            elevation: 0,
+            elevation: 0.3,
             child: Container(
               padding: EdgeInsets.all(4),
               child: ExpansionTile(
@@ -682,7 +682,7 @@ class _SummaryPageState extends State<SummaryPage> {
 
           // nepal covid cases status bar
           Card(
-            elevation: 0,
+            elevation: 0.3,
             child: Container(
               padding: EdgeInsets.all(4),
               child: ExpansionTile(

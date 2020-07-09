@@ -125,12 +125,16 @@ class _FaqPageState extends State<FaqPage> {
                               // questions
                               title: Text(
                                 faq[index]['question_np'].toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
                               ),
                               subtitle: Text(
                                 "About: " + faq[index]['category'].toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   color: Colors.blueGrey,
                                 ),
                               ),
@@ -145,8 +149,9 @@ class _FaqPageState extends State<FaqPage> {
                                       child: Text(
                                         faq[index]['answer_np'].toString(),
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.w400,
                                           color: Colors.black54,
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),
@@ -203,12 +208,16 @@ class _FaqPageState extends State<FaqPage> {
                               // questions
                               title: Text(
                                 faq[index]['question'].toString(),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 18,
+                                ),
                               ),
                               subtitle: Text(
                                 "About: " + faq[index]['category'].toString(),
                                 style: TextStyle(
                                   fontWeight: FontWeight.w400,
-                                  fontSize: 13,
+                                  fontSize: 14,
                                   color: Colors.blueGrey,
                                 ),
                               ),
@@ -223,8 +232,9 @@ class _FaqPageState extends State<FaqPage> {
                                       child: Text(
                                         faq[index]['answer'].toString(),
                                         style: TextStyle(
-                                          fontWeight: FontWeight.w600,
+                                          fontWeight: FontWeight.w400,
                                           color: Colors.black54,
+                                          fontSize: 16,
                                         ),
                                       ),
                                     ),

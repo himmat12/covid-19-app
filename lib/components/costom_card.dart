@@ -17,7 +17,7 @@ class _CostomCardState extends State<CostomCard> {
     return Expanded(
         flex: 1,
         child: Card(
-          elevation: 0,
+          elevation: 0.3,
           child: Container(
             height: 60,
             child: Column(

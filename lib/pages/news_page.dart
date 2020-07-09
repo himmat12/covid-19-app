@@ -25,14 +25,9 @@ class _NewsPageState extends State<NewsPage> {
 
   @override
   void initState() {
-    // ignore: todo
-    // TODO: implement initState
     super.initState();
     getNews();
   }
-
-  // url launching method
-  // Future<Void> _launched;
 
   Future<void> _urlLauncher(String url) async {
     if (await canLaunch(url)) {
@@ -120,7 +115,10 @@ class _NewsPageState extends State<NewsPage> {
                                 news[index]['title'].toString(),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(fontWeight: FontWeight.w600),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 20,
+                                ),
                               ),
                               subtitle: Text(news[index]['source'].toString()),
                             ),
@@ -138,7 +136,8 @@ class _NewsPageState extends State<NewsPage> {
                               child: Text(
                                 news[index]['summary'].toString(),
                                 style: TextStyle(
-                                  fontWeight: FontWeight.w600,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w400,
                                   color: Colors.black54,
                                 ),
                               ),
