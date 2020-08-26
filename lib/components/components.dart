@@ -9,6 +9,7 @@ export '../pages/myths_page.dart';
 export '../pages/faq_page.dart';
 export 'package:shimmer/shimmer.dart';
 export '../pages/home_page.dart';
+export 'loading_container.dart';
 
 // modals
 export '../model/world_status.dart';

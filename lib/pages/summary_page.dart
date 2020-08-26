@@ -1,6 +1,7 @@
-import 'dart:convert' as convert;
+import 'dart:convert';
 import 'package:covid_app/components/components.dart';
 import 'package:covid_app/pages/country_summary_page.dart';
+import 'package:covid_app/pages/districts_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:core';
@@ -17,12 +18,16 @@ class _SummaryPageState extends State<SummaryPage> {
   String url;
   double percent;
 
+  WorldStatusModel world;
+
   void getWorldData() async {
     url = "https://data.nepalcorona.info/api/v1/world";
     var response = await http.get(url);
+
+    data = json.decode(response.body);
     setState(() {
-      data = convert.json.decode(response.body);
       isLoading = false;
+      world = WorldStatusModel.fromJson(data);
     });
   }
 
@@ -30,68 +35,16 @@ class _SummaryPageState extends State<SummaryPage> {
     url = "https://nepalcorona.info/api/v1/data/nepal";
     var response = await http.get(url);
     setState(() {
-      nepalData = convert.json.decode(response.body);
-      // print(nepalData);
+      nepalData = json.decode(response.body);
     });
   }
 
 // world status bar get percentage methods
-  double getActivePercent() {
+  double getWorldPercent(int no, int total) {
     double res;
     String dot;
     setState(() {
-      percent = (data['active'] / data['cases']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getCriticalPercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent = (data['critical'] / data['cases']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getRecoveredPercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent = (data['recovered'] / data['cases']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getDeathsPercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent = (data['deaths'] / data['cases']) * 100;
+      percent = (no / total) * 100;
 
       res = percent;
     });
@@ -105,82 +58,11 @@ class _SummaryPageState extends State<SummaryPage> {
   }
 
 // nepal ststus bar get percentage methods
-  double getNpPositivePercent() {
+  double getNepalPercent(int no, int total) {
     double res;
     String dot;
     setState(() {
-      percent =
-          (nepalData['tested_positive'] / nepalData['tested_total']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getNpNegativePercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent =
-          (nepalData['tested_negative'] / nepalData['tested_total']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getNpIsolationPercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent =
-          (nepalData['in_isolation'] / nepalData['tested_positive']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getNpRecoveredPercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent = (nepalData['recovered'] / nepalData['tested_positive']) * 100;
-
-      res = percent;
-    });
-    if (res < 10) {
-      dot = res.toString().substring(0, 4);
-      return double.parse(dot);
-    } else {
-      dot = res.toString().substring(0, 5);
-      return double.parse(dot);
-    }
-  }
-
-  double getNpDeathsPercent() {
-    double res;
-    String dot;
-    setState(() {
-      percent = (nepalData['deaths'] / nepalData['tested_positive']) * 100;
+      percent = (no / total) * 100;
 
       res = percent;
     });
@@ -266,23 +148,21 @@ class _SummaryPageState extends State<SummaryPage> {
                       children: <Widget>[
                         CostomCard(
                           title: "Total Cases",
-                          jsonData: data['cases'],
+                          jsonData: world.cases,
                         ),
                         CostomCard(
                           title: "Cases (Today)",
-                          jsonData: data['todayCases'],
+                          jsonData: world.todayCases,
                         ),
                       ],
                     ),
                     Row(
                       children: <Widget>[
                         CostomCard(
-                          title: "Active Cases",
-                          jsonData: data['active'],
-                        ),
+                            title: "Active Cases", jsonData: world.active),
                         CostomCard(
                           title: "Critical Cases",
-                          jsonData: data['critical'],
+                          jsonData: world.critical,
                         ),
                       ],
                     ),
@@ -290,11 +170,11 @@ class _SummaryPageState extends State<SummaryPage> {
                       children: <Widget>[
                         CostomCard(
                           title: "Recovered",
-                          jsonData: data['recovered'],
+                          jsonData: world.recovered,
                         ),
                         CostomCard(
                           title: "Recovered (Today)",
-                          jsonData: data['critical'],
+                          jsonData: world.critical,
                         ),
                       ],
                     ),
@@ -302,11 +182,11 @@ class _SummaryPageState extends State<SummaryPage> {
                       children: <Widget>[
                         CostomCard(
                           title: "Deaths",
-                          jsonData: data['deaths'],
+                          jsonData: world.deaths,
                         ),
                         CostomCard(
                           title: "Deaths (Today)",
-                          jsonData: data['todayDeaths'],
+                          jsonData: world.todayDeaths,
                         ),
                       ],
                     ),
@@ -385,7 +265,7 @@ class _SummaryPageState extends State<SummaryPage> {
                             children: <Widget>[
                               Text(
                                 "Total Cases: " +
-                                    data['cases'].toString() +
+                                    world.cases.toString() +
                                     "(100%)",
                                 style: TextStyle(
                                   fontWeight: FontWeight.w500,
@@ -414,7 +294,8 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getActivePercent(),
+                                      percentage: getWorldPercent(
+                                          world.active, world.cases),
                                     ),
                                   ),
                                   Expanded(
@@ -423,7 +304,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getActivePercent().toString() +
+                                            getWorldPercent(
+                                                    world.active, world.cases)
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -454,7 +337,8 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getCriticalPercent(),
+                                      percentage: getWorldPercent(
+                                          world.critical, world.cases),
                                     ),
                                   ),
                                   Expanded(
@@ -463,7 +347,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getCriticalPercent().toString() +
+                                            getWorldPercent(
+                                                    world.critical, world.cases)
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -494,7 +380,8 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getRecoveredPercent(),
+                                      percentage: getWorldPercent(
+                                          world.recovered, world.cases),
                                     ),
                                   ),
                                   Expanded(
@@ -503,7 +390,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getRecoveredPercent().toString() +
+                                            getWorldPercent(world.recovered,
+                                                    world.cases)
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -534,7 +423,8 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getDeathsPercent(),
+                                      percentage: getWorldPercent(
+                                          world.deaths, world.cases),
                                     ),
                                   ),
                                   Expanded(
@@ -543,7 +433,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getDeathsPercent().toString() +
+                                            getWorldPercent(
+                                                    world.deaths, world.cases)
+                                                .toString() +
                                             "%",
                                         style: TextStyle(
                                           color: Colors.blueGrey,
@@ -721,7 +613,6 @@ class _SummaryPageState extends State<SummaryPage> {
                         )
                       : Container(
                           child: Column(
-                            // crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
                               Text(
                                 "Total Tested: " +
@@ -754,7 +645,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getNpPositivePercent(),
+                                      percentage: getNepalPercent(
+                                          nepalData['tested_positive'],
+                                          nepalData['tested_total']),
                                     ),
                                   ),
                                   Expanded(
@@ -763,7 +656,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getNpPositivePercent().toString() +
+                                            getNepalPercent(
+                                                    nepalData[
+                                                        'tested_positive'],
+                                                    nepalData['tested_total'])
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -775,7 +672,7 @@ class _SummaryPageState extends State<SummaryPage> {
                               SizedBox(
                                 height: 10,
                               ),
-                              //  tested positive status percent bar
+                              //  tested negative status percent bar
                               Row(
                                 children: <Widget>[
                                   Expanded(
@@ -794,7 +691,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getNpNegativePercent(),
+                                      percentage: getNepalPercent(
+                                          nepalData['tested_negative'],
+                                          nepalData['tested_total']),
                                     ),
                                   ),
                                   Expanded(
@@ -803,7 +702,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getNpNegativePercent().toString() +
+                                            getNepalPercent(
+                                                    nepalData[
+                                                        'tested_negative'],
+                                                    nepalData['tested_total'])
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -847,7 +750,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getNpIsolationPercent(),
+                                      percentage: getNepalPercent(
+                                          nepalData['in_isolation'],
+                                          nepalData['tested_positive']),
                                     ),
                                   ),
                                   Expanded(
@@ -856,7 +761,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getNpIsolationPercent().toString() +
+                                            getNepalPercent(
+                                                    nepalData['in_isolation'],
+                                                    nepalData[
+                                                        'tested_positive'])
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -887,7 +796,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getNpRecoveredPercent(),
+                                      percentage: getNepalPercent(
+                                          nepalData['recovered'],
+                                          nepalData['tested_positive']),
                                     ),
                                   ),
                                   Expanded(
@@ -896,7 +807,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getNpRecoveredPercent().toString() +
+                                            getNepalPercent(
+                                                    nepalData['recovered'],
+                                                    nepalData[
+                                                        'tested_positive'])
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -927,7 +842,9 @@ class _SummaryPageState extends State<SummaryPage> {
                                     child: ProgressBar(
                                       width: 200,
                                       height: 14,
-                                      percentage: getNpDeathsPercent(),
+                                      percentage: getNepalPercent(
+                                          nepalData['deaths'],
+                                          nepalData['tested_positive']),
                                     ),
                                   ),
                                   Expanded(
@@ -936,7 +853,11 @@ class _SummaryPageState extends State<SummaryPage> {
                                       alignment: Alignment.centerLeft,
                                       child: Text(
                                         "  " +
-                                            getNpDeathsPercent().toString() +
+                                            getNepalPercent(
+                                                    nepalData['deaths'],
+                                                    nepalData[
+                                                        'tested_positive'])
+                                                .toString() +
                                             "%",
                                         style:
                                             TextStyle(color: Colors.blueGrey),
@@ -955,6 +876,29 @@ class _SummaryPageState extends State<SummaryPage> {
                     height: 20,
                   ),
                 ],
+              ),
+            ),
+          ),
+
+          // country wise data navigator
+          Card(
+            elevation: 0.3,
+            child: ListTile(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => DistrictPage()));
+              },
+              title: Text(
+                "Districts",
+                style: TextStyle(
+                    color: Theme.of(context).primaryColorDark,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+              trailing: Icon(
+                FontAwesomeIcons.mapMarkedAlt,
+                size: 14,
+                color: Theme.of(context).primaryColor,
               ),
             ),
           ),

@@ -1,22 +1,48 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'world_status.g.dart';
+
+@JsonSerializable()
 class WorldStatusModel {
+  int updated;
   int cases;
+  int todayCases;
+  int deaths;
+  int todayDeaths;
+  int recovered;
+  int todayRecovered;
   int active;
   int critical;
-  int recovered;
-  int deaths;
+  double casesPerOneMillion;
+  double deathsPerOneMillion;
+  int tests;
+  double testsPerOneMillion;
+  int population;
+  double activePerOneMillion;
+  double recoveredPerOneMillion;
+  double criticalPerOneMillion;
+  int affectedCountries;
 
   WorldStatusModel({
+    this.updated,
     this.cases,
-    this.active,
-    this.recovered,
+    this.todayCases,
     this.deaths,
+    this.todayDeaths,
+    this.recovered,
+    this.todayRecovered,
+    this.active,
+    this.critical,
+    this.casesPerOneMillion,
+    this.deathsPerOneMillion,
+    this.tests,
+    this.testsPerOneMillion,
+    this.population,
+    this.activePerOneMillion,
+    this.recoveredPerOneMillion,
+    this.criticalPerOneMillion,
+    this.affectedCountries,
   });
 
-  WorldStatusModel.fromJson(parsedData) {
-    cases = parsedData['cases'];
-    active = parsedData['active'];
-    critical = parsedData['critical'];
-    recovered = parsedData['recovered'];
-    deaths = parsedData['deaths'];
-  }
+  factory WorldStatusModel.fromJson(json) => _$WorldStatusModelFromJson(json);
 }
