@@ -1,5 +1,7 @@
-import 'package:covid_app/model/api/district_centroid.dart';
+// import 'package:covid_app/model/api/district_centroid.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'district_centroid.dart';
 
 part 'district_model.g.dart';
 

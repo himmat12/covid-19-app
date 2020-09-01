@@ -37,111 +37,97 @@ class _DistrictPageState extends State<DistrictPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text("Districts"),
-        ),
-        body: isLoading == true
-            ? Column(
-                children: [
-                  LoadingContainer(boxHeight: 60),
-                  LoadingContainer(boxHeight: 60),
-                  LoadingContainer(boxHeight: 60),
-                  LoadingContainer(boxHeight: 60),
-                  LoadingContainer(boxHeight: 60),
-                  LoadingContainer(boxHeight: 60),
-                ],
-              )
-            : ListView.builder(
-                itemCount: districts.length,
-                itemBuilder: (context, index) {
-                  return ExpansionTile(
-                    title: Text(districts[index].title_en +
-                        " " +
-                        "( " +
-                        districts[index].title_ne +
-                        " )"),
-                    subtitle: Text("Code : " + districts[index].code),
-                    expandedAlignment: Alignment.centerLeft,
-                    childrenPadding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("bbox :"),
-                              Text(districts[index].bbox[0].toString(),
-                                  style: Theme.of(context).textTheme.caption),
-                              Column(
-                                children: [
-                                  Text(districts[index].bbox[1].toString(),
-                                      style:
-                                          Theme.of(context).textTheme.caption),
-                                  Text(districts[index].bbox[2].toString(),
-                                      style:
-                                          Theme.of(context).textTheme.caption),
-                                ],
-                              ),
-                            ],
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text("Centroid :"),
-                              Text("Type : " + districts[index].centroid.type,
-                                  style: Theme.of(context).textTheme.caption),
-                              InkWell(
-                                onTap: () {},
-                                child: Container(
-                                  // decoration: BoxDecoration(
-                                  //   color: Theme.of(context).primaryColorLight,
-                                  // ),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                          "Lat : " +
-                                              districts[index]
-                                                  .centroid
-                                                  .coordinates[0]
-                                                  .toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption
-                                              .apply(
-                                                  color: Theme.of(context)
-                                                      .primaryColor)),
-                                      Text(
-                                          "Lng : " +
-                                              districts[index]
-                                                  .centroid
-                                                  .coordinates[1]
-                                                  .toString(),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption
-                                              .apply(
-                                                  color: Theme.of(context)
-                                                      .primaryColor)),
-                                    ],
-                                  ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Districts"),
+      ),
+      body: isLoading == true
+          ? LinearProgressIndicator()
+          : ListView.builder(
+              itemCount: districts.length,
+              itemBuilder: (context, index) {
+                return ExpansionTile(
+                  title: Text(districts[index].title_en +
+                      " " +
+                      "( " +
+                      districts[index].title_ne +
+                      " )"),
+                  subtitle: Text("Code : " + districts[index].code),
+                  expandedAlignment: Alignment.centerLeft,
+                  childrenPadding: EdgeInsets.fromLTRB(20, 0, 20, 10),
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("bbox :"),
+                            Text(districts[index].bbox[0].toString(),
+                                style: Theme.of(context).textTheme.caption),
+                            Column(
+                              children: [
+                                Text(districts[index].bbox[1].toString(),
+                                    style: Theme.of(context).textTheme.caption),
+                                Text(districts[index].bbox[2].toString(),
+                                    style: Theme.of(context).textTheme.caption),
+                              ],
+                            ),
+                          ],
+                        ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Centroid :"),
+                            Text("Type : " + districts[index].centroid.type,
+                                style: Theme.of(context).textTheme.caption),
+                            InkWell(
+                              onTap: () {},
+                              child: Container(
+                                // decoration: BoxDecoration(
+                                //   color: Theme.of(context).primaryColorLight,
+                                // ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                        "Lat : " +
+                                            districts[index]
+                                                .centroid
+                                                .coordinates[0]
+                                                .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .apply(
+                                                color: Theme.of(context)
+                                                    .primaryColor)),
+                                    Text(
+                                        "Lng : " +
+                                            districts[index]
+                                                .centroid
+                                                .coordinates[1]
+                                                .toString(),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .caption
+                                            .apply(
+                                                color: Theme.of(context)
+                                                    .primaryColor)),
+                                  ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  );
-                },
-              ),
-      ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
     );
   }
 }

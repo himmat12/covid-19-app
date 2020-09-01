@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:covid_app/components/components.dart';
+import 'package:covid_app/managers/world_data_manager.dart';
 import 'package:covid_app/pages/country_summary_page.dart';
 import 'package:covid_app/pages/districts_page.dart';
 import 'package:flutter/material.dart';
@@ -31,11 +32,13 @@ class _SummaryPageState extends State<SummaryPage> {
     });
   }
 
+  bool isNepalLoading = true;
   Future getNepalData() async {
     url = "https://nepalcorona.info/api/v1/data/nepal";
     var response = await http.get(url);
     setState(() {
       nepalData = json.decode(response.body);
+      isNepalLoading = false;
     });
   }
 
@@ -82,6 +85,8 @@ class _SummaryPageState extends State<SummaryPage> {
     getNepalData();
   }
 
+  WorldDataManager worldDataManager = WorldDataManager();
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -115,86 +120,148 @@ class _SummaryPageState extends State<SummaryPage> {
             ),
           ),
 
-          isLoading == true
-              ? Column(
-                  children: <Widget>[
-                    Container(
-                        width: 200,
-                        padding: EdgeInsets.all(12),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 5,
-                            ),
-                            CircularProgressIndicator(),
-                            Text(
-                              "   Loading...",
-                              style: TextStyle(
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        )),
-                  ],
-                )
-              : ListView(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  children: <Widget>[
-                    // world data covid
-                    Row(
-                      children: <Widget>[
-                        CostomCard(
-                          title: "Total Cases",
-                          jsonData: world.cases,
-                        ),
-                        CostomCard(
-                          title: "Cases (Today)",
-                          jsonData: world.todayCases,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        CostomCard(
-                            title: "Active Cases", jsonData: world.active),
-                        CostomCard(
-                          title: "Critical Cases",
-                          jsonData: world.critical,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        CostomCard(
-                          title: "Recovered",
-                          jsonData: world.recovered,
-                        ),
-                        CostomCard(
-                          title: "Recovered (Today)",
-                          jsonData: world.critical,
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        CostomCard(
-                          title: "Deaths",
-                          jsonData: world.deaths,
-                        ),
-                        CostomCard(
-                          title: "Deaths (Today)",
-                          jsonData: world.todayDeaths,
-                        ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ],
-                ),
+          StreamBuilder(
+            stream: worldDataManager.getWorldStream,
+            builder: (context, snapshot) {
+              WorldStatusModel _world = snapshot.data;
+
+              return ListView(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  // world data covid
+                  Row(
+                    children: <Widget>[
+                      CostomCard(
+                        title: "Total Cases",
+                        jsonData: _world.cases,
+                      ),
+                      CostomCard(
+                        title: "Cases (Today)",
+                        jsonData: world.todayCases,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      CostomCard(title: "Active Cases", jsonData: world.active),
+                      CostomCard(
+                        title: "Critical Cases",
+                        jsonData: world.critical,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      CostomCard(
+                        title: "Recovered",
+                        jsonData: world.recovered,
+                      ),
+                      CostomCard(
+                        title: "Recovered (Today)",
+                        jsonData: world.critical,
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      CostomCard(
+                        title: "Deaths",
+                        jsonData: world.deaths,
+                      ),
+                      CostomCard(
+                        title: "Deaths (Today)",
+                        jsonData: world.todayDeaths,
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                ],
+              );
+            },
+          ),
+          // isLoading == true
+          //     ? Column(
+          //         children: <Widget>[
+          //           Container(
+          //               width: 200,
+          //               padding: EdgeInsets.all(12),
+          //               child: Row(
+          //                 mainAxisAlignment: MainAxisAlignment.start,
+          //                 children: <Widget>[
+          //                   SizedBox(
+          //                     width: 5,
+          //                   ),
+          //                   CircularProgressIndicator(),
+          //                   Text(
+          //                     "   Loading...",
+          //                     style: TextStyle(
+          //                         color: Theme.of(context).primaryColorDark,
+          //                         fontSize: 16,
+          //                         fontWeight: FontWeight.w500),
+          //                   ),
+          //                 ],
+          //               )),
+          //         ],
+          //       )
+          //     : ListView(
+          //         shrinkWrap: true,
+          //         physics: NeverScrollableScrollPhysics(),
+          //         children: <Widget>[
+          //           // world data covid
+          //           Row(
+          //             children: <Widget>[
+          //               CostomCard(
+          //                 title: "Total Cases",
+          //                 jsonData: world.cases,
+          //               ),
+          //               CostomCard(
+          //                 title: "Cases (Today)",
+          //                 jsonData: world.todayCases,
+          //               ),
+          //             ],
+          //           ),
+          //           Row(
+          //             children: <Widget>[
+          //               CostomCard(
+          //                   title: "Active Cases", jsonData: world.active),
+          //               CostomCard(
+          //                 title: "Critical Cases",
+          //                 jsonData: world.critical,
+          //               ),
+          //             ],
+          //           ),
+          //           Row(
+          //             children: <Widget>[
+          //               CostomCard(
+          //                 title: "Recovered",
+          //                 jsonData: world.recovered,
+          //               ),
+          //               CostomCard(
+          //                 title: "Recovered (Today)",
+          //                 jsonData: world.critical,
+          //               ),
+          //             ],
+          //           ),
+          //           Row(
+          //             children: <Widget>[
+          //               CostomCard(
+          //                 title: "Deaths",
+          //                 jsonData: world.deaths,
+          //               ),
+          //               CostomCard(
+          //                 title: "Deaths (Today)",
+          //                 jsonData: world.todayDeaths,
+          //               ),
+          //             ],
+          //           ),
+          //           SizedBox(
+          //             height: 20,
+          //           ),
+          //         ],
+          //       ),
 
           // country wise data navigator
           Card(
@@ -489,7 +556,7 @@ class _SummaryPageState extends State<SummaryPage> {
             ),
           ),
 
-          isLoading == true
+          isNepalLoading == true
               ? Column(
                   children: <Widget>[
                     Container(

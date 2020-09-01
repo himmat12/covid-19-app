@@ -1,5 +1,7 @@
-import 'package:covid_app/model/api/country_info.dart';
+// import 'package:covid_app/model/api/country_info.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'country_info.dart';
 
 part 'country_model.g.dart';
 

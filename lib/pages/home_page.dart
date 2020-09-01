@@ -24,74 +24,86 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: BottomNavigationBar(
-          elevation: 0,
-          onTap: onTapped,
-          currentIndex: _selectedIndex,
-          selectedItemColor: Colors.blue,
-          items: [
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.globeAsia,
-                color: Colors.blueAccent,
-              ),
-              title: Text("world"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.newspaper,
-                color: Colors.blueAccent,
-              ),
-              title: Text("news"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.handSparkles,
-                color: Colors.blueAccent,
-              ),
-              title: Text("myths"),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                FontAwesomeIcons.questionCircle,
-                color: Colors.blueAccent,
-              ),
-              title: Text("FAQ"),
-            ),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: Container(
+          decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                  image: AssetImage("assets/img/covidicn.jpg"))),
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(8, 12, 8, 18),
-            child: Column(
-              children: <Widget>[
-                // costom appbar
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 12.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      CircleAvatar(
-                        radius: 34,
-                        backgroundColor: Colors.transparent,
-                        child: Image.asset(
-                          "assets/img/covidicn.jpg",
-                          fit: BoxFit.scaleDown,
-                        ),
-                      ),
-                      Text(
-                        " COVID-19 TRACKER",
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
-                  ),
-                ),
-
-                _childrenTabs[_selectedIndex],
-              ],
+        title: Text(
+          " COVID-19 TRACKER",
+          style: Theme.of(context).textTheme.headline5,
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        elevation: 0,
+        onTap: onTapped,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.blue,
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.globeAsia,
+              color: Colors.blueAccent,
             ),
+            title: Text("world"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.newspaper,
+              color: Colors.blueAccent,
+            ),
+            title: Text("news"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.handSparkles,
+              color: Colors.blueAccent,
+            ),
+            title: Text("myths"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              FontAwesomeIcons.questionCircle,
+              color: Colors.blueAccent,
+            ),
+            title: Text("FAQ"),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(8, 12, 8, 18),
+          child: Column(
+            children: <Widget>[
+              // costom appbar
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 12.0),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: <Widget>[
+              //       CircleAvatar(
+              //         radius: 34,
+              //         backgroundColor: Colors.transparent,
+              //         child: Image.asset(
+              //           "assets/img/covidicn.jpg",
+              //           fit: BoxFit.scaleDown,
+              //         ),
+              //       ),
+              //       Text(
+              //         " COVID-19 TRACKER",
+              //         style: Theme.of(context).textTheme.headline5,
+              //       ),
+              //     ],
+              //   ),
+              // ),
+
+              _childrenTabs[_selectedIndex],
+            ],
           ),
         ),
       ),
