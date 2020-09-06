@@ -1,7 +1,6 @@
 import 'package:covid_app/components/components.dart';
 import 'package:covid_app/managers/search_country_manager.dart';
 import 'package:covid_app/model/api/country_model.dart';
-import 'package:covid_app/model/services/country_data_service.dart';
 import 'package:flutter/material.dart';
 
 class SearchCountry extends SearchDelegate {

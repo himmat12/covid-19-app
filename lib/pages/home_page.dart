@@ -36,7 +36,10 @@ class _HomePageState extends State<HomePage> {
         ),
         title: Text(
           " COVID-19 TRACKER",
-          style: Theme.of(context).textTheme.headline5,
+          style: Theme.of(context)
+              .textTheme
+              .headline5
+              .apply(color: Theme.of(context).primaryColorDark),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:covid_app/components/components.dart';
 import 'package:covid_app/model/api/district_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;

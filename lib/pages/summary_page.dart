@@ -657,7 +657,7 @@ class _SummaryPageState extends State<SummaryPage> {
                       fontWeight: FontWeight.w500),
                 ),
                 children: <Widget>[
-                  isLoading == true
+                  isNepalLoading == true
                       ? Column(
                           children: <Widget>[
                             Container(

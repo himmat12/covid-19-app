@@ -1,7 +1,7 @@
-import 'dart:convert';
 import 'package:covid_app/components/components.dart';
+import 'package:covid_app/managers/faq_data_manager.dart';
+import 'package:covid_app/model/api/faq_model.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 
 class FaqPage extends StatefulWidget {
   @override
@@ -9,34 +9,15 @@ class FaqPage extends StatefulWidget {
 }
 
 class _FaqPageState extends State<FaqPage> {
-  var faq;
-  bool isLoading = true;
-  String url;
   bool isNp = false;
-
-  Future getMyths() async {
-    url = "https://nepalcorona.info/api/v1/faqs";
-    var response = await http
-        .get(Uri.encodeFull(url), headers: {'Accept': 'aplication/json'});
-    setState(() {
-      faq = json.decode(response.body)['data'];
-      isLoading = false;
-    });
-  }
-
-  @override
-  void initState() {
-    // ignore: todo
-    // TODO: implement initState
-    super.initState();
-    getMyths();
-  }
+  FAQManager faqManager = FAQManager();
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         // FAQ header
+
         ListTile(
           trailing: Container(
             width: 82,
@@ -83,173 +64,141 @@ class _FaqPageState extends State<FaqPage> {
           ),
         ),
 
-        isNp == true
-            ? isLoading == true
+        StreamBuilder(
+          stream: faqManager.faqStream,
+          builder: (context, snapshot) {
+            List<FAQ> faq = snapshot.data;
+
+            return snapshot.connectionState == ConnectionState.waiting
                 ? Column(
-                    children: <Widget>[
-                      Container(
-                          width: 200,
-                          padding: EdgeInsets.all(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                width: 5,
-                              ),
-                              CircularProgressIndicator(),
-                              Text(
-                                "   Loading...",
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          )),
+                    children: [
+                      LoadingContainer(boxHeight: 110),
+                      LoadingContainer(boxHeight: 110),
+                      LoadingContainer(boxHeight: 110),
+                      LoadingContainer(boxHeight: 110),
                     ],
                   )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: faq.length,
-                    itemBuilder: (context, index) => Container(
-                      padding: EdgeInsets.fromLTRB(4, 0, 4, 10),
-                      child: Card(
-                        elevation: 0,
-                        child: Card(
-                          elevation: 0,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                            child: ExpansionTile(
-                              // questions
-                              title: Text(
-                                faq[index]['question_np'].toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "About: " + faq[index]['category'].toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                  color: Colors.blueGrey,
-                                ),
-                              ),
-                              children: <Widget>[
-                                ListView(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: <Widget>[
-                                    // answers
-                                    Container(
-                                      padding: EdgeInsets.all(8),
-                                      child: Text(
-                                        faq[index]['answer_np'].toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black54,
-                                          fontSize: 16,
-                                        ),
-                                      ),
+                : isNp == true
+                    ? ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: faq.length,
+                        itemBuilder: (context, index) => Container(
+                          padding: EdgeInsets.fromLTRB(4, 0, 4, 10),
+                          child: Card(
+                            elevation: 0,
+                            child: Card(
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0),
+                                child: ExpansionTile(
+                                  // questions
+                                  title: Text(
+                                    faq[index].question_np,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
                                     ),
-                                    SizedBox(
-                                      height: 20,
+                                  ),
+                                  subtitle: Text(
+                                    "About: " + faq[index].category,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  children: <Widget>[
+                                    ListView(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      children: <Widget>[
+                                        // answers
+                                        Container(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            faq[index].answer_np,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black54,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  )
-            : isLoading == true
-                ? Column(
-                    children: <Widget>[
-                      Container(
-                          width: 200,
-                          padding: EdgeInsets.all(12),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              SizedBox(
-                                width: 5,
-                              ),
-                              CircularProgressIndicator(),
-                              Text(
-                                "   Loading...",
-                                style: TextStyle(
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ],
-                          )),
-                    ],
-                  )
-                : ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: faq.length,
-                    itemBuilder: (context, index) => Container(
-                      padding: EdgeInsets.fromLTRB(4, 0, 4, 10),
-                      child: Card(
-                        elevation: 0,
-                        child: Card(
-                          elevation: 0,
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(top: 8.0, bottom: 8.0),
-                            child: ExpansionTile(
-                              // questions
-                              title: Text(
-                                faq[index]['question'].toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 18,
-                                ),
-                              ),
-                              subtitle: Text(
-                                "About: " + faq[index]['category'].toString(),
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                  color: Colors.blueGrey,
-                                ),
-                              ),
-                              children: <Widget>[
-                                ListView(
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: <Widget>[
-                                    // answers
-                                    Container(
-                                      padding: EdgeInsets.all(8),
-                                      child: Text(
-                                        faq[index]['answer'].toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color: Colors.black54,
-                                          fontSize: 16,
-                                        ),
-                                      ),
+                      )
+                    : ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: faq.length,
+                        itemBuilder: (context, index) => Container(
+                          padding: EdgeInsets.fromLTRB(4, 0, 4, 10),
+                          child: Card(
+                            elevation: 0,
+                            child: Card(
+                              elevation: 0,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    top: 8.0, bottom: 8.0),
+                                child: ExpansionTile(
+                                  // questions
+                                  title: Text(
+                                    faq[index].question,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 18,
                                     ),
-                                    SizedBox(
-                                      height: 20,
+                                  ),
+                                  subtitle: Text(
+                                    "About: " + faq[index].category,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 14,
+                                      color: Colors.blueGrey,
+                                    ),
+                                  ),
+                                  children: <Widget>[
+                                    ListView(
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      children: <Widget>[
+                                        // answers
+                                        Container(
+                                          padding: EdgeInsets.all(8),
+                                          child: Text(
+                                            faq[index].answer,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w400,
+                                              color: Colors.black54,
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 20,
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
-                              ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
+                      );
+          },
+        ),
       ],
     );
   }

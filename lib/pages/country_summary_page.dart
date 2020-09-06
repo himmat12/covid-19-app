@@ -1,11 +1,9 @@
-import 'dart:convert' as convert;
 import 'package:covid_app/components/components.dart';
 import 'package:covid_app/managers/search_country_manager.dart';
 import 'package:covid_app/model/api/country_model.dart';
 import 'package:covid_app/pages/search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:http/http.dart' as http;
 
 class CountryWiseInfectionSummary extends StatefulWidget {
   @override
