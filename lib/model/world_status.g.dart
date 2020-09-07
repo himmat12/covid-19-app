@@ -10,7 +10,7 @@ WorldStatusModel _$WorldStatusModelFromJson(Map<String, dynamic> json) {
   return WorldStatusModel(
     updated: json['updated'] as int,
     cases: json['cases'] as int,
-    todayCases: json['todayCases'] as int,
+    todayCases: json['todayCases'] == null ? 0 : json['todayCases'] as int,
     deaths: json['deaths'] as int,
     todayDeaths: json['todayDeaths'] as int,
     recovered: json['recovered'] as int,

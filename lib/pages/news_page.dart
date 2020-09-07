@@ -58,7 +58,30 @@ class _NewsPageState extends State<NewsPage> {
           builder: (context, snapshot) {
             List<News> news = snapshot.data;
 
-            return snapshot.connectionState == ConnectionState.waiting
+            if (snapshot.hasError) {
+              return Center(
+                child: Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    image: DecorationImage(
+                      image: AssetImage("assets/img/404.png"),
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                  child: Text(
+                    "error occured check your internet connection ..",
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .apply(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+            return news == null
                 ? Column(
                     children: [
                       LoadingContainer(boxHeight: 80),

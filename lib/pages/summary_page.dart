@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:covid_app/components/components.dart';
 import 'package:covid_app/managers/nepal_data_manager.dart';
 import 'package:covid_app/managers/world_data_manager.dart';
@@ -128,7 +129,30 @@ class _SummaryPageState extends State<SummaryPage> {
             builder: (context, snapshot) {
               WorldStatusModel _world = snapshot.data;
 
-              return snapshot.connectionState == ConnectionState.waiting
+              if (snapshot.hasError) {
+                return Center(
+                  child: Container(
+                    height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(6),
+                      image: DecorationImage(
+                        image: AssetImage("assets/img/404.png"),
+                        fit: BoxFit.scaleDown,
+                      ),
+                    ),
+                    child: Text(
+                      "error occured check your internet connection ..",
+                      style: Theme.of(context)
+                          .textTheme
+                          .caption
+                          .apply(color: Colors.red),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                );
+              }
+              return _world == null
                   ? Column(
                       children: [
                         loadingRow(),
@@ -150,17 +174,17 @@ class _SummaryPageState extends State<SummaryPage> {
                             ),
                             CostomCard(
                               title: "Cases (Today)",
-                              jsonData: world.todayCases,
+                              jsonData: _world.todayCases,
                             ),
                           ],
                         ),
                         Row(
                           children: <Widget>[
                             CostomCard(
-                                title: "Active Cases", jsonData: world.active),
+                                title: "Active Cases", jsonData: _world.active),
                             CostomCard(
                               title: "Critical Cases",
-                              jsonData: world.critical,
+                              jsonData: _world.critical,
                             ),
                           ],
                         ),
@@ -168,11 +192,11 @@ class _SummaryPageState extends State<SummaryPage> {
                           children: <Widget>[
                             CostomCard(
                               title: "Recovered",
-                              jsonData: world.recovered,
+                              jsonData: _world.recovered,
                             ),
                             CostomCard(
                               title: "Recovered (Today)",
-                              jsonData: world.critical,
+                              jsonData: _world.critical,
                             ),
                           ],
                         ),
@@ -180,11 +204,11 @@ class _SummaryPageState extends State<SummaryPage> {
                           children: <Widget>[
                             CostomCard(
                               title: "Deaths",
-                              jsonData: world.deaths,
+                              jsonData: _world.deaths,
                             ),
                             CostomCard(
                               title: "Deaths (Today)",
-                              jsonData: world.todayDeaths,
+                              jsonData: _world.todayDeaths,
                             ),
                           ],
                         ),
@@ -574,7 +598,31 @@ class _SummaryPageState extends State<SummaryPage> {
               builder: (context, snapshot) {
                 NepalStatusModel nepal = snapshot.data;
 
-                return snapshot.connectionState == ConnectionState.waiting
+                if (snapshot.hasError) {
+                  return Center(
+                    child: Container(
+                      height: 200,
+                      width: MediaQuery.of(context).size.width,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(6),
+                        image: DecorationImage(
+                          image: AssetImage("assets/img/404.png"),
+                          fit: BoxFit.scaleDown,
+                        ),
+                      ),
+                      child: Text(
+                        "error occured check your internet connection ..",
+                        style: Theme.of(context)
+                            .textTheme
+                            .caption
+                            .apply(color: Colors.red),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  );
+                }
+
+                return nepal == null
                     ? Column(
                         children: [
                           loadingRow(),

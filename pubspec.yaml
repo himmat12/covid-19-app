@@ -56,6 +56,7 @@ flutter:
     - assets/img/covid1.png
     - assets/img/who.png
     - assets/img/covidicn.jpg
+    - assets/img/404.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
   # For details regarding adding assets from package dependencies, see

@@ -69,7 +69,30 @@ class _FaqPageState extends State<FaqPage> {
           builder: (context, snapshot) {
             List<FAQ> faq = snapshot.data;
 
-            return snapshot.connectionState == ConnectionState.waiting
+            if (snapshot.hasError) {
+              return Center(
+                child: Container(
+                  height: 200,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(6),
+                    image: DecorationImage(
+                      image: AssetImage("assets/img/404.png"),
+                      fit: BoxFit.scaleDown,
+                    ),
+                  ),
+                  child: Text(
+                    "error occured check your internet connection ..",
+                    style: Theme.of(context)
+                        .textTheme
+                        .caption
+                        .apply(color: Colors.red),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              );
+            }
+            return faq == null
                 ? Column(
                     children: [
                       LoadingContainer(boxHeight: 110),
@@ -95,14 +118,18 @@ class _FaqPageState extends State<FaqPage> {
                                 child: ExpansionTile(
                                   // questions
                                   title: Text(
-                                    faq[index].question_np,
+                                    faq[index].question_np == null
+                                        ? "no data"
+                                        : faq[index].question_np,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 18,
                                     ),
                                   ),
                                   subtitle: Text(
-                                    "About: " + faq[index].category,
+                                    "About: " + faq[index].category == null
+                                        ? "no data"
+                                        : faq[index].category,
                                     style: TextStyle(
                                       fontWeight: FontWeight.w400,
                                       fontSize: 14,
@@ -118,7 +145,9 @@ class _FaqPageState extends State<FaqPage> {
                                         Container(
                                           padding: EdgeInsets.all(8),
                                           child: Text(
-                                            faq[index].answer_np,
+                                            faq[index].answer_np == null
+                                                ? "no data"
+                                                : faq[index].answer_np,
                                             style: TextStyle(
                                               fontWeight: FontWeight.w400,
                                               color: Colors.black54,

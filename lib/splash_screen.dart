@@ -112,19 +112,19 @@ class _SplashScreenState extends State<SplashScreen> {
                     ),
                   )),
             ),
-            Positioned(
-              top: MediaQuery.of(context).size.height - 298,
-              child: Container(
-                  alignment: Alignment.bottomCenter,
-                  child: Text(
-                    "Version 1.0.0.0",
-                    textScaleFactor: 0.9,
-                    style: TextStyle(
-                      color: Theme.of(context).primaryColorDark,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  )),
-            ),
+            // Positioned(
+            //   top: MediaQuery.of(context).size.height - 298,
+            //   child: Container(
+            //       alignment: Alignment.bottomCenter,
+            //       child: Text(
+            //         "Version 1.0.0.0",
+            //         textScaleFactor: 0.9,
+            //         style: TextStyle(
+            //           color: Theme.of(context).primaryColorDark,
+            //           fontWeight: FontWeight.w300,
+            //         ),
+            //       )),
+            // ),
             Positioned(
               top: MediaQuery.of(context).size.height - 80,
               child: Shimmer.fromColors(
